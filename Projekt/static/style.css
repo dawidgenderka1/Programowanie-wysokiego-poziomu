@@ -1,0 +1,31 @@
+body {
+    font-family: Arial;
+    text-align: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(4, 60px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.card {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    background-color: lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.revealed {
+    background-color: lightgreen;
+    cursor: default;
+}
+
+.removed {
+    visibility: hidden;
+}

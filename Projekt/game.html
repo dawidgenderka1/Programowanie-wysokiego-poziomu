@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head><title>Memory Game</title></head>
+<body>
+  <h1>Memory</h1>
+  <button onclick="startGame()">Nowa gra</button>
+  <div id="board"></div>
+  <p id="info"></p>
+
+  <script>
+    let state = [];
+    let first = null;
+
+    function startGame() {
+      fetch('/start', { method: 'POST' })
+        .then(r => r.json())
+        .then(data => {
+          state = data.cards;
+          renderBoard();
+          document.getElementById('info').textContent = '';
+        });
+    }
+
+    function renderBoard() {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      state.forEach((val, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = val || '?';
+        btn.onclick = () => handleFlip(idx);
+        board.appendChild(btn);
+      });
+    }
+
+    function handleFlip(idx) {
+      if (first === null) {
+        first = idx;
+        return;
+      }
+      fetch('/flip', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({i: first, j: idx})
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          if (data.finished) {
+            document.getElementById('info').textContent = `Wygrana! Ruchy: ${data.moves}`;
+          }
+        }
+        first = null;
+        startGame();
+      });
+    }
+  </script>
+</body>
+</html>
