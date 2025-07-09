@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikacja - Nauczyciele</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 10px; text-decoration: none; color: #333; }
+        .nav a:hover { text-decoration: underline; }
+        .teacher-form { margin-bottom: 20px; }
+        .teacher-form input { margin: 5px; padding: 5px; }
+        .teacher-list li { list-style: none; margin: 10px 0; }
+        .teacher-actions a { margin-left: 10px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('teachers_page') }}">Teachers</a>
+        <a href="{{ url_for('about') }}">About</a>
+    </div>
+    <h1>Nauczyciele</h1>
+    <form class="teacher-form" method="POST">
+        <input type="text" name="name" placeholder="Teacher Name" required>
+        <input type="text" name="subject" placeholder="Subject" required>
+        <input type="text" name="time" placeholder="Time (e.g., Mon 10:00-12:00)" required>
+        <button type="submit">Dodaj Nauczyciela</button>
+    </form>
+    <ul class="teacher-list">
+        {% for teacher in teachers %}
+        <li>
+            {{ teacher[1] }} - {{ teacher[2] }}
+            <span class="teacher-actions">
+                <a href="{{ url_for('delete_teacher', id=teacher[0]) }}">Delete</a>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do App - Tasks</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .nav { margin-bottom: 20px; }
+        .nav a { margin-right: 10px; text-decoration: none; color: #333; }
+        .nav a:hover { text-decoration: underline; }
+        .task-form { margin-bottom: 20px; }
+        .task-list li { list-style: none; margin: 10px 0; }
+        .task-done { text-decoration: line-through; color: #888; }
+        .task-actions a { margin-left: 10px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="nav">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('tasks_page') }}">Tasks</a>
+        <a href="{{ url_for('about') }}">About</a>
+    </div>
+    <h1>Tasks</h1>
+    <form class="task-form" method="POST">
+        <input type="text" name="task" placeholder="Dodaj nowe zadanie" required>
+        <button type="submit">Dodaj zadanie</button>
+    </form>
+    <ul class="task-list">
+        {% for task in tasks %}
+        <li class="{% if task.done %}task-done{% endif %}">
+            {{ task.content }}
+            <span class="task-actions">
+                <a href="{{ url_for('mark_done', id=task.id) }}">
+                    {% if task.done %}Cofnij{% else %}Oznacz jako zrobione{% endif %}
+                </a>
+                <a href="{{ url_for('delete_task', id=task.id) }}">Usuń</a>
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
